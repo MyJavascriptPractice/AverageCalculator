@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1><i>Chapter 5 Array Assignment 2</h1>
+<style type="text/css">
+	table {
+		float: left;
+	}
+	div {
+		float: left;
+	}
+	p {
+		padding: 0;
+		margin: 0;
+	}
+</style>
+<table>
+	<tr>
+		<td><b>Score:</td>
+		<td>
+			<input type="text" id="txtScore"></input>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Score Total:</td>
+		<td>
+			<input type="text" id="txtTotal" disabled=""></input>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Score Count:</td>
+		<td>
+			<input type="text" id="txtCount" disabled=""></input>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Average:</td>
+		<td>
+			<input type="text" id="txtAverage" disabled=""></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" id="btnAdd" value="Add"></input>
+		</td>
+		<td>
+			<input type="button" id="btnClear" value="Clear"></input>
+		</td>
+	</tr>
+</table>
+<div>
+	<p><b>Scores:</p>
+	<textarea id="msgDisplay" rows="8" cols="30">
+		
+	</textarea>
+</div>
+<script type="text/javascript">
+	var $ = function (id){
+		return document.getElementById(id);
+	}
+
+	window.onload = function (){
+		$('btnAdd').onclick = addToArray;
+		$('btnClear').onclick = clearInputs;
+	}
+
+	var array = [];
+	function addToArray (){
+
+//check input from user and push it to array if valid
+		var item = parseInt($('txtScore').value);
+		if (isNaN(item) || ((item < 0) || (item > 100))) {
+			alert("Please enter a valid number between 0-100");
+			$('txtScore').value = '';
+			return;
+		}
+		array.push(item);
+
+//calls display function which returns the # of calls to variable count
+		var count = 1 + parseInt(display());
+		$('txtScore').value = '';
+
+//Get total of elements in array using reduce function
+		var total = array.reduce(function(a,b){
+			return a + b
+		});
+		$('txtTotal').value = total;
+
+//get average
+		var average = total / (count);
+		if (isNaN(count)) {
+			$('txtAverage').value = total.toFixed(2);
+		}else{
+			$('txtAverage').value = average.toFixed(2);
+		}
+	};
+
+//displays elements in array by looping through array.length
+	function display(){
+		var count = $('txtCount').value
+		for (var i = 0; i < array.length; i++) {
+// adds value of i + 1 to the count input field
+			$('txtCount').value = (i + 1);
+			if (i == 0) {
+				$('msgDisplay').value = array[0] + "\n";
+			}else{
+				$('msgDisplay').value += array[i] + "\n";
+			}
+		}
+//returns variable to var count which called in function addToArray
+		return count;
+	};
+
+//clears all inputs and sets array to nothing
+	function clearInputs() {
+		$('txtCount').value = '';
+		$('msgDisplay').value = '';
+		$('txtAverage').value = '';
+		$('txtTotal').value = '';
+		array = [];
+	}
+
+</script>
+</body>
+</html>
